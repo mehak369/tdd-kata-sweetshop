@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { getAllSweets, addSweet } from "./sweets.service";
+import { purchaseSweet } from "./sweets.service";
 
 export const getSweets = async (_req: Request, res: Response) => {
   const sweets = await getAllSweets();
@@ -13,3 +14,15 @@ export const createSweet = async (req: Request, res: Response) => {
 
   return res.status(201).json(sweet);
 };
+export const purchase = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  if (!id) {
+    return res.status(400).json({ message: "Sweet id is required" });
+  }
+
+  const sweet = await purchaseSweet(id);
+
+  return res.status(200).json(sweet);
+};
+

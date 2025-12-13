@@ -25,3 +25,26 @@ export const addSweet = async (
     quantity: sweet.quantity
   };
 };
+
+export const purchaseSweet = async (id: string) => {
+  const sweet = await Sweet.findById(id);
+
+  if (!sweet) {
+    throw new Error("Sweet not found");
+  }
+
+  if (sweet.quantity <= 0) {
+    throw new Error("Out of stock");
+  }
+
+  sweet.quantity -= 1;
+  await sweet.save();
+
+  return {
+    id: sweet._id.toString(),
+    name: sweet.name,
+    category: sweet.category,
+    price: sweet.price,
+    quantity: sweet.quantity
+  };
+};
