@@ -3,7 +3,7 @@
   "compilerOptions": {
     /* Language and Environment */
     "target": "esnext",
-    "module": "nodenext",
+    "module": "commonjs",
 
     /* Type Definitions */
     "types": ["node", "jest"],
@@ -21,9 +21,8 @@
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
-
+    "esModuleInterop": true,
     /* Module & Import Behavior */
-    "verbatimModuleSyntax": true,
     "isolatedModules": true,
     "moduleDetection": "force",
     "noUncheckedSideEffectImports": true,
