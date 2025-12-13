@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { getAllSweets, addSweet } from "./sweets.service";
 import { purchaseSweet } from "./sweets.service";
+import { restockSweet } from "./sweets.service";
 
 export const getSweets = async (_req: Request, res: Response) => {
   const sweets = await getAllSweets();
@@ -25,4 +26,16 @@ export const purchase = async (req: Request, res: Response) => {
 
   return res.status(200).json(sweet);
 };
+export const restock = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { quantity } = req.body;
+
+  if (!id || typeof quantity !== "number") {
+    return res.status(400).json({ message: "Invalid input" });
+  }
+
+  const sweet = await restockSweet(id, quantity);
+  return res.status(200).json(sweet);
+};
+
 
