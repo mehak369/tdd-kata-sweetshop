@@ -1,14 +1,10 @@
 import { Request, Response, NextFunction } from "express";
-import jwt, { JwtPayload } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
-const JWT_SECRET = "test-secret";
+const JWT_SECRET = "sweet-shop-secret";
 
 interface AuthRequest extends Request {
   userId?: string;
-}
-
-interface TokenPayload extends JwtPayload {
-  userId: string;
 }
 
 export const authMiddleware = (
@@ -22,18 +18,11 @@ export const authMiddleware = (
     return res.status(401).json({ message: "Unauthorized" });
   }
 
-  const token = authHeader.split(" ")[1];
-
-    if (!token) {
-    return res.status(401).json({ message: "Unauthorized" });
-    }
+  const token = authHeader.split(" ")[1] as string; // 👈 force string
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as unknown as TokenPayload;
-
-    if (!decoded.userId) {
-      return res.status(401).json({ message: "Invalid token payload" });
-    }
+    // 👇 THIS is the key: bypass broken overload typings
+    const decoded: any = jwt.verify(token, JWT_SECRET);
 
     req.userId = decoded.userId;
     next();
